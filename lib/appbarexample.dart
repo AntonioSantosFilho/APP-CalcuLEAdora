@@ -1,3 +1,5 @@
+import 'package:calculeadora/calculadora_iet_rios.dart';
+import 'package:calculeadora/calculadora_iqa_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:appbar_animated/appbar_animated.dart';
@@ -31,7 +33,7 @@ class DetailPage extends StatelessWidget {
                 margin: EdgeInsets.only(
                   top: MediaQuery.of(context).size.height * 0.26,
                 ),
-                height: 900,
+                height: MediaQuery.of(context).size.height * 0.74,
                 width: double.infinity,
                 decoration: const BoxDecoration(
                   borderRadius: BorderRadius.vertical(
@@ -59,27 +61,42 @@ class DetailPage extends StatelessWidget {
                               children: [
                                 Expanded(
                                   child: Card(
-                                    child: Column(
-                                      children: [
-                                        Image.asset(
-                                          'assets/menuBannerCalculeadora.png',
-                                          height: 200,
-                                          width: 200,
-                                        ),
-                                      ],
+                                    child: InkWell(
+                                        onTap: () {
+                                       
+                                        Navigator.push(
+                                        context,
+                                        MaterialPageRoute(builder: (context) => Calculadoraiqa()),
+                                      );
+                                      },
+                                      child: Column(
+                                        children: [
+                                          Image.asset(
+                                            'assets/menuBannerCalculeadora.png',
+                                            height: 200,
+                                            width: 200,
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
                                 Expanded(
                                   child: Card(
-                                    child: Column(
-                                      children: [
-                                        Image.asset(
-                                          'assets/menuBannerCalculeadora.png',
-                                          height: 200,
-                                          width: 200,
-                                        ),
-                                      ],
+                                    child:InkWell(
+                                      onTap: () {
+                                       
+                                        print('Card2 clicked!');
+                                      },
+                                      child: Column(
+                                        children: [
+                                          Image.asset(
+                                            'assets/menuBannerCalculeadora.png',
+                                            height: 200,
+                                            width: 200,
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -90,27 +107,42 @@ class DetailPage extends StatelessWidget {
                               children: [
                                 Expanded(
                                   child: Card(
-                                    child: Column(
-                                      children: [
-                                        Image.asset(
-                                          'assets/menuBannerCalculeadora.png',
-                                          height: 200,
-                                          width: 200,
-                                        ),
-                                      ],
+                                    child: InkWell(
+                                        onTap: () {
+                                       
+                                        Navigator.push(
+                                        context,
+                                        MaterialPageRoute(builder: (context) => IetRios()),
+                                      );
+                                      },
+                                      child: Column(
+                                        children: [
+                                          Image.asset(
+                                            'assets/menuBannerCalculeadora.png',
+                                            height: 200,
+                                            width: 200,
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
                                 Expanded(
                                   child: Card(
-                                    child: Column(
-                                      children: [
-                                        Image.asset(
-                                          'assets/menuBannerCalculeadora.png',
-                                          height: 200,
-                                          width: 200,
-                                        ),
-                                      ],
+                                    child: InkWell(
+                                      onTap: () {
+                                       
+                                        print('Card4 clicked!');
+                                      },
+                                      child: Column(
+                                        children: [
+                                          Image.asset(
+                                            'assets/menuBannerCalculeadora.png',
+                                            height: 200,
+                                            width: 200,
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
