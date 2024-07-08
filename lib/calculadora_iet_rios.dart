@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
 
 TextEditingController ietRiosCLController = TextEditingController();
 TextEditingController ietRiosPTController = TextEditingController();
@@ -135,9 +136,44 @@ class IetRios extends StatelessWidget {
               ),
             ),
             //==================================================================================================
+            Container(
+              width: double.infinity,
+              margin: EdgeInsets.symmetric(horizontal: 20.0),
+              child: ElevatedButton(
+                onPressed: () {
+                  // Todos os campos de texto estão preenchidos, permita o evento de clique do botão
+                  calculo(double.parse(ietRiosCLController.text),
+                      double.parse(ietRiosPTController.text));
+                },
+                style: ElevatedButton.styleFrom(
+                  padding: EdgeInsets.all(15.0),
+                  backgroundColor: Colors.blue, // Cor de fundo do botão
+                  shape: RoundedRectangleBorder(
+                    borderRadius:
+                        BorderRadius.circular(10.0), // Borda arredondada
+                  ),
+                ),
+                child: Text(
+                  "Calcular",
+                  style: TextStyle(
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white, // Cor do texto do botão
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
     );
+  }
+
+  void calculo(double cloro, double pt) {
+    double iet_cla = 10 * (6 - ((-0.7 - 0.6 * (log(cloro)) / log(2)) - 20));
+
+    double iet_pt = 10 * (6 - ((0.42 - 0.36 * log(pt)) / log(2))) - 20;
+
+    print("\n\no valor de iet-cla: $iet_cla \n\n o valor de iet_pt: $iet_pt");
   }
 }

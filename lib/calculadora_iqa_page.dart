@@ -532,9 +532,16 @@ class Calculadoraiqa extends StatelessWidget {
   }
 
   void Calculo() {
-    // Get the values from the controllers
+    double pesoPH = 0.12;
+    double pesoDBO5 = 0.10;
+    double pesoNitrogenio = 0.10;
+    double pesoFosforo = 0.10;
+    double pesoTemperatura = 0.10;
+    double pesoTurbidez = 0.08;
+    double pesoOxigenioDissolvido = 0.17;
+    double pesoSolidosTotais = 0.08;
+    double pesoEColi = 0.15;
 
-    // Calculate the sum
     double sum = dbo +
         od +
         fosforo +
