@@ -170,10 +170,10 @@ class IetReservatorios extends StatelessWidget {
   }
 
   void calculo(double cloro, double pt) {
-    double iet_cla = 10 * (6 - ((-0.7 - 0.6 * (log(cloro)) / log(2)) - 20));
+    double iet_cl = 10 * (6 - ((-0.92 - 0.34 * (log(cloro)) / log(2))));
 
-    double iet_pt = (10 * (6 - ((0.42 - 0.36 * (log(pt))) / log(2))) - 20);
+    double iet_pt = (10 * (6 - ((1.77 - 0.42 * (log(pt))) / log(2))));
 
-    print("\n\no valor de iet-cla: $iet_cla \n\n o valor de iet_pt: $iet_pt");
+    print("\n\RESERVATORIO iet-cla: $iet_cl \n\nRESERVATORIO iet_pt: $iet_pt");
   }
 }

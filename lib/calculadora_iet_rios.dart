@@ -174,6 +174,6 @@ class IetRios extends StatelessWidget {
 
     double iet_pt = 10 * (6 - ((0.42 - 0.36 * log(pt)) / log(2))) - 20;
 
-    print("\n\no valor de iet-cla: $iet_cla \n\n o valor de iet_pt: $iet_pt");
+    print("\n\RIOS iet-cla: $iet_cla \n\nRIOS iet_pt: $iet_pt");
   }
 }

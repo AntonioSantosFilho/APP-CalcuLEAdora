@@ -1,3 +1,4 @@
+import 'package:calculeadora/calculadora_iet_reseratorios.dart';
 import 'package:calculeadora/calculadora_iet_rios.dart';
 import 'package:calculeadora/calculadora_iqa_page.dart';
 import 'package:flutter/cupertino.dart';
@@ -62,12 +63,13 @@ class DetailPage extends StatelessWidget {
                                 Expanded(
                                   child: Card(
                                     child: InkWell(
-                                        onTap: () {
-                                       
+                                      onTap: () {
                                         Navigator.push(
-                                        context,
-                                        MaterialPageRoute(builder: (context) => Calculadoraiqa()),
-                                      );
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  Calculadoraiqa()),
+                                        );
                                       },
                                       child: Column(
                                         children: [
@@ -83,9 +85,8 @@ class DetailPage extends StatelessWidget {
                                 ),
                                 Expanded(
                                   child: Card(
-                                    child:InkWell(
+                                    child: InkWell(
                                       onTap: () {
-                                       
                                         print('Card2 clicked!');
                                       },
                                       child: Column(
@@ -108,12 +109,12 @@ class DetailPage extends StatelessWidget {
                                 Expanded(
                                   child: Card(
                                     child: InkWell(
-                                        onTap: () {
-                                       
+                                      onTap: () {
                                         Navigator.push(
-                                        context,
-                                        MaterialPageRoute(builder: (context) => IetRios()),
-                                      );
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => IetRios()),
+                                        );
                                       },
                                       child: Column(
                                         children: [
@@ -131,8 +132,12 @@ class DetailPage extends StatelessWidget {
                                   child: Card(
                                     child: InkWell(
                                       onTap: () {
-                                       
-                                        print('Card4 clicked!');
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  IetReservatorios()),
+                                        );
                                       },
                                       child: Column(
                                         children: [
