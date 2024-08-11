@@ -34,7 +34,7 @@ class DetailPage extends StatelessWidget {
                 margin: EdgeInsets.only(
                   top: MediaQuery.of(context).size.height * 0.26,
                 ),
-                height: MediaQuery.of(context).size.height * 0.74,
+                height: MediaQuery.of(context).size.height * 0.68,
                 width: double.infinity,
                 decoration: const BoxDecoration(
                   borderRadius: BorderRadius.vertical(
@@ -48,6 +48,7 @@ class DetailPage extends StatelessWidget {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
+                        _buildHeader(context),
                         SizedBox(height: 30),
                         Text(
                           "Índices de Qualidades",
@@ -73,10 +74,19 @@ class DetailPage extends StatelessWidget {
                                       },
                                       child: Column(
                                         children: [
-                                          Image.asset(
-                                            'assets/menuBannerCalculeadora.png',
-                                            height: 200,
-                                            width: 200,
+                                          Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              image: DecorationImage(
+                                                image: AssetImage(
+                                                  'assets/1.png',
+                                                ),
+                                                fit: BoxFit.fill,
+                                              ),
+                                            ),
+                                            height: 150,
+                                            width: double.infinity,
                                           ),
                                         ],
                                       ),
@@ -91,10 +101,19 @@ class DetailPage extends StatelessWidget {
                                       },
                                       child: Column(
                                         children: [
-                                          Image.asset(
-                                            'assets/menuBannerCalculeadora.png',
-                                            height: 200,
-                                            width: 200,
+                                          Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              image: DecorationImage(
+                                                image: AssetImage(
+                                                  'assets/2.png',
+                                                ),
+                                                fit: BoxFit.fill,
+                                              ),
+                                            ),
+                                            height: 150,
+                                            width: double.infinity,
                                           ),
                                         ],
                                       ),
@@ -118,10 +137,19 @@ class DetailPage extends StatelessWidget {
                                       },
                                       child: Column(
                                         children: [
-                                          Image.asset(
-                                            'assets/menuBannerCalculeadora.png',
-                                            height: 200,
-                                            width: 200,
+                                          Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              image: DecorationImage(
+                                                image: AssetImage(
+                                                  'assets/3.png',
+                                                ),
+                                                fit: BoxFit.fill,
+                                              ),
+                                            ),
+                                            height: 150,
+                                            width: double.infinity,
                                           ),
                                         ],
                                       ),
@@ -141,10 +169,19 @@ class DetailPage extends StatelessWidget {
                                       },
                                       child: Column(
                                         children: [
-                                          Image.asset(
-                                            'assets/menuBannerCalculeadora.png',
-                                            height: 200,
-                                            width: 200,
+                                          Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              image: DecorationImage(
+                                                image: AssetImage(
+                                                  'assets/4.png',
+                                                ),
+                                                fit: BoxFit.fill,
+                                              ),
+                                            ),
+                                            height: 150,
+                                            width: double.infinity,
                                           ),
                                         ],
                                       ),
@@ -162,6 +199,48 @@ class DetailPage extends StatelessWidget {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeader(BuildContext context) {
+    return Container(
+      height: 220,
+      decoration: BoxDecoration(
+        color: Color(0xFF188579),
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(30),
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            SizedBox(height: 45),
+            SizedBox(height: 5),
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: Text(
+                  'AkiEstou!',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 26,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: 20),
+            Center(
+                child: Text('Cadastrar - se',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold))),
+          ],
         ),
       ),
     );

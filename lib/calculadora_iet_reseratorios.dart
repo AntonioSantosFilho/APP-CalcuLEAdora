@@ -1,3 +1,4 @@
+import 'package:calculeadora/navbart.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
 
@@ -20,9 +21,12 @@ class IetReservatorios extends StatelessWidget {
         centerTitle: true,
         leading: IconButton(
           color: Color(0xFFFFFFFF),
-          icon: Icon(Icons.menu),
+          icon: Icon(Icons.chevron_left),
           onPressed: () {
-            // Adicione aqui a funcionalidade do ícone
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => Navbart()),
+            );
           },
         ),
         actions: [

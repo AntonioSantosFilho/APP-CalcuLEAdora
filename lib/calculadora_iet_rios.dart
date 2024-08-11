@@ -1,3 +1,5 @@
+import 'package:calculeadora/navbart.dart';
+import 'package:calculeadora/teste.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
 
@@ -10,25 +12,28 @@ class IetRios extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 211, 240, 255),
+      backgroundColor: const Color.fromARGB(255, 211, 240, 255),
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(
+        backgroundColor: const Color.fromARGB(
             255, 68, 103, 247), // Define a cor de fundo da AppBar
-        title: Text('CalcuLEAdora',
+        title: const Text('CalcuLEAdora',
             style: TextStyle(color: Color(0xFFFFFFFF)),
             textAlign: TextAlign.center),
         centerTitle: true,
         leading: IconButton(
-          color: Color(0xFFFFFFFF),
-          icon: Icon(Icons.menu),
+          color: const Color(0xFFFFFFFF),
+          icon: const Icon(Icons.chevron_left),
           onPressed: () {
-            // Adicione aqui a funcionalidade do ícone
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Navbart()),
+            );
           },
         ),
         actions: [
           IconButton(
-            color: Color(0xFFFFFFFF),
-            icon: Icon(Icons.sunny),
+            color: const Color(0xFFFFFFFF),
+            icon: const Icon(Icons.sunny),
             onPressed: () {
               // Adicione aqui a funcionalidade do ícone
             },
@@ -38,19 +43,19 @@ class IetRios extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Container(
-              margin: EdgeInsets.all(6),
-              padding: EdgeInsets.all(6),
+              margin: const EdgeInsets.all(6),
+              padding: const EdgeInsets.all(6),
               decoration: BoxDecoration(
-                color: Color(0x772666E0),
+                color: const Color(0x772666E0),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Row(
                 children: [
-                  Expanded(
+                  const Expanded(
                     flex: 6, // 60% da largura disponível
                     child: Text(
                       " IET (CL) µg/L:",
@@ -64,23 +69,26 @@ class IetRios extends StatelessWidget {
                     child: TextField(
                       keyboardType: TextInputType.number,
                       controller: ietRiosCLController,
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontSize: 16, color: Color.fromARGB(255, 0, 0, 0)),
                       textAlign: TextAlign.center,
                       decoration: InputDecoration(
                         filled: true,
-                        fillColor: Color(0x772666E0),
+                        fillColor: const Color(0x772666E0),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(20),
-                          borderSide: BorderSide(color: Color(0x772666E0)),
+                          borderSide:
+                              const BorderSide(color: Color(0x772666E0)),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15),
-                          borderSide: BorderSide(color: Color(0x772666E0)),
+                          borderSide:
+                              const BorderSide(color: Color(0x772666E0)),
                         ),
-                        contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                        contentPadding:
+                            const EdgeInsets.symmetric(horizontal: 10),
                         hintText: '0,00',
-                        hintStyle: TextStyle(
+                        hintStyle: const TextStyle(
                             color: Color.fromARGB(255, 207, 207, 207)),
                       ),
                     ),
@@ -91,15 +99,15 @@ class IetRios extends StatelessWidget {
 
             //==================================================================================================
             Container(
-              margin: EdgeInsets.all(6),
-              padding: EdgeInsets.all(6),
+              margin: const EdgeInsets.all(6),
+              padding: const EdgeInsets.all(6),
               decoration: BoxDecoration(
-                color: Color(0x772666E0),
+                color: const Color(0x772666E0),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Row(
                 children: [
-                  Expanded(
+                  const Expanded(
                     flex: 6, // 60% da largura disponível
                     child: Text(" IET (PT) µg/L::",
                         textAlign: TextAlign.center,
@@ -111,23 +119,25 @@ class IetRios extends StatelessWidget {
                     child: TextField(
                       keyboardType: TextInputType.number,
                       controller: ietRiosPTController,
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontSize: 16, color: Color.fromARGB(255, 0, 0, 0)),
                       textAlign: TextAlign.center,
                       decoration: InputDecoration(
                         filled: true,
-                        fillColor: Color(0x772666E0),
+                        fillColor: const Color(0x772666E0),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(20),
-                          borderSide: BorderSide(color: Color(0x772666E0)),
+                          borderSide:
+                              const BorderSide(color: Color(0x772666E0)),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15),
-                          borderSide: BorderSide(color: Color(0x772666E0)),
+                          borderSide:
+                              const BorderSide(color: Color(0x772666E0)),
                         ),
                         contentPadding: EdgeInsets.symmetric(horizontal: 10),
                         hintText: '0,00',
-                        hintStyle: TextStyle(
+                        hintStyle: const TextStyle(
                             color: Color.fromARGB(255, 207, 207, 207)),
                       ),
                     ),
@@ -138,7 +148,7 @@ class IetRios extends StatelessWidget {
             //==================================================================================================
             Container(
               width: double.infinity,
-              margin: EdgeInsets.symmetric(horizontal: 20.0),
+              margin: const EdgeInsets.symmetric(horizontal: 20.0),
               child: ElevatedButton(
                 onPressed: () {
                   // Todos os campos de texto estão preenchidos, permita o evento de clique do botão
@@ -146,14 +156,14 @@ class IetRios extends StatelessWidget {
                       double.parse(ietRiosPTController.text));
                 },
                 style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.all(15.0),
+                  padding: const EdgeInsets.all(15.0),
                   backgroundColor: Colors.blue, // Cor de fundo do botão
                   shape: RoundedRectangleBorder(
                     borderRadius:
                         BorderRadius.circular(10.0), // Borda arredondada
                   ),
                 ),
-                child: Text(
+                child: const Text(
                   "Calcular",
                   style: TextStyle(
                     fontSize: 18.0,
