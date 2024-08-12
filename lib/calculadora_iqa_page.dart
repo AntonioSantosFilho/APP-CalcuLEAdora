@@ -69,6 +69,7 @@ class _CalculadoraiqaState extends State<Calculadoraiqa> {
                 onPressed: () {
                   if (_areAllFieldsFilled()) {
                     teste();
+                    ResultadoIQA();
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
@@ -207,6 +208,40 @@ class _CalculadoraiqaState extends State<Calculadoraiqa> {
     return double.tryParse(sanitizedInput) ?? 0.0;
   }
 
+  void ResultadoIQA() {
+    double dbo = parseInput(dboController.text);
+    double od = parseInput(odController.text);
+    double fosforo = parseInput(fosforoController.text);
+    double nitrogenio = parseInput(nitrogenioController.text);
+    double coliformes = parseInput(coliformesController.text);
+    double turbidez = parseInput(turbidezController.text);
+    double solidosSuspensos = parseInput(solidosSuspensosController.text);
+    double temperatura = parseInput(temperaturaController.text);
+    double ph = parseInput(phController.text);
+
+    double pesoPH = 0.12;
+    double pesoDBO5 = 0.10;
+    double pesoNitrogenio = 0.10;
+    double pesoFosforo = 0.10;
+    double pesoTemperatura = 0.10;
+    double pesoTurbidez = 0.08;
+    double pesoOxigenioDissolvido = 0.17;
+    double pesoSolidosTotais = 0.08;
+    double pesoEColi = 0.15;
+
+    num resultado = pow(calcularIQADBO(dbo), pesoDBO5) *
+        pow(calcularIQANitrogenio(nitrogenio), pesoNitrogenio) *
+        pow(calcularIQAFosforo(fosforo), pesoFosforo) *
+        pow(calcularIQADiferencaTemperatura(temperatura), pesoTemperatura) *
+        pow(calcularIQATurbidez(turbidez), pesoTurbidez) *
+        pow(calcularIQASolidosTotais(solidosSuspensos), pesoSolidosTotais) *
+        pow(calcularIQAOD(od), pesoOxigenioDissolvido) *
+        pow(calcularIQApH(ph), pesoPH) *
+        pow(calcularIQAColiformes(coliformes), pesoEColi);
+
+    print("\n\n\nO resultado do IQA é: $resultado");
+  }
+
   // Fórmulas para DBO
   String _getFormulaDBO(double dbo) {
     if (dbo >= 0 && dbo <= 5) {
@@ -343,6 +378,8 @@ class _CalculadoraiqaState extends State<Calculadoraiqa> {
       return "100 - 33 * log($coliformes)";
     } else if (coliformes > 1 && coliformes <= 5) {
       return "100 - 37.2 * log($coliformes) + 3.60743 * pow(log($coliformes), 2)";
+    } else if (coliformes > 5) {
+      return "Para valores maiores que 5 é usado a constante 3";
     } else {
       return "Valor fora do intervalo esperado";
     }
@@ -353,6 +390,8 @@ class _CalculadoraiqaState extends State<Calculadoraiqa> {
       return 100 - 33 * log(coliformes);
     } else if (coliformes > 1 && coliformes <= 5) {
       return 100 - 37.2 * log(coliformes) + 3.60743 * pow(log(coliformes), 2);
+    } else if (coliformes > 5) {
+      return 3;
     } else {
       throw Exception('Valor de coliformes fora do intervalo esperado');
     }
@@ -419,26 +458,26 @@ class _CalculadoraiqaState extends State<Calculadoraiqa> {
 
   // Fórmulas para pH
   String _getFormulaPH(double ph) {
-    if (ph >= 0 && ph < 2) {
+    if (ph >= 0 && ph <= 2) {
       return "2.00";
-    } else if (ph >= 2 && ph < 4) {
+    } else if (ph > 2 && ph <= 4) {
       return "13.6 - 10.6 * $ph + 2.4364 * pow($ph, 2)";
-    } else if (ph >= 4 && ph < 6.2) {
+    } else if (ph >= 4 && ph <= 6.2) {
       return "155.5 - 77.36 * $ph + 10.2481 * pow($ph, 2)";
-    } else if (ph >= 6.2 && ph < 7) {
+    } else if (ph > 6.2 && ph <= 7) {
       return "-657.2 + 197.38 * $ph - 12.9167 * pow($ph, 2)";
-    } else if (ph >= 7 && ph < 8) {
+    } else if (ph > 7 && ph <= 8) {
       return "-427.8 + 142.05 * $ph - 9.695 * pow($ph, 2)";
-    } else if (ph >= 8 && ph < 8.5) {
+    } else if (ph > 8 && ph <= 8.5) {
       return "216 - 16 * $ph";
-    } else if (ph >= 8.5 && ph < 9) {
+    } else if (ph > 8.5 && ph <= 9) {
       return "1415823 * exp(-1.1507 * $ph)";
-    } else if (ph >= 9 && ph < 10) {
+    } else if (ph > 9 && ph <= 10) {
       return "50 - 32 * ($ph - 9)";
-    } else if (ph >= 10 && ph < 12) {
+    } else if (ph > 10 && ph <= 12) {
       return "633 - 106.5 * $ph + 4.5 * pow($ph, 2)";
-    } else if (ph >= 12 && ph <= 14) {
-      return "2.00";
+    } else if (ph > 12 && ph <= 14) {
+      return "3.00";
     } else {
       return "Valor fora do intervalo esperado";
     }
