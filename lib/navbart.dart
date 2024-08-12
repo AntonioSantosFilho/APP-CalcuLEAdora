@@ -1,5 +1,5 @@
-import 'package:calculeadora/appbarexample.dart';
 import 'package:calculeadora/calculadora_iqa_page.dart';
+import 'package:calculeadora/details_page.dart';
 import 'package:calculeadora/teste.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -87,7 +87,7 @@ class _NavbartState extends State<Navbart> {
       case 0:
         return MainPageC();
       case 1:
-        return Calculadoraiqa();
+        return DetailPage();
       case 2:
         return DetailPage();
       case 3:

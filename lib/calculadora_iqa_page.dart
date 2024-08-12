@@ -22,7 +22,7 @@ class _CalculadoraiqaState extends State<Calculadoraiqa> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 211, 240, 255),
+      backgroundColor: Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
         backgroundColor: Color.fromARGB(255, 68, 103, 247),
         title: Text('CalcuLEAdora',

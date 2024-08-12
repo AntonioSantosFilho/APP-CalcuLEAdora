@@ -1,6 +1,6 @@
-import 'package:calculeadora/appbarexample.dart';
 import 'package:calculeadora/calculadora_iqa_page.dart';
 import 'package:calculeadora/navbart.dart';
+import 'package:calculeadora/result_page.dart';
 import 'package:flutter/material.dart';
 import 'onboarding_initial.dart';
 
@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: Navbart(),
+      home: ResultPage(),
     );
   }
 }
