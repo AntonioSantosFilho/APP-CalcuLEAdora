@@ -1,3 +1,4 @@
+import 'package:calculeadora/result_page.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
 
@@ -21,6 +22,8 @@ class Calculadoraiqa extends StatefulWidget {
 class _CalculadoraiqaState extends State<Calculadoraiqa> {
   @override
   Widget build(BuildContext context) {
+    final Map<String, String> valoresDigitados = {};
+
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
@@ -68,8 +71,83 @@ class _CalculadoraiqaState extends State<Calculadoraiqa> {
               child: ElevatedButton(
                 onPressed: () {
                   if (_areAllFieldsFilled()) {
-                    teste();
-                    ResultadoIQA();
+                    // Capturar os valores digitados
+                    valoresDigitados['DBO'] = dboController.text;
+                    valoresDigitados['OD'] = odController.text;
+                    valoresDigitados['Fósforo'] = fosforoController.text;
+                    valoresDigitados['Nitrogênio'] = nitrogenioController.text;
+                    valoresDigitados['Coliformes'] = coliformesController.text;
+                    valoresDigitados['Turbidez'] = turbidezController.text;
+                    valoresDigitados['Sólidos Suspensos'] =
+                        solidosSuspensosController.text;
+                    valoresDigitados['Temperatura'] =
+                        temperaturaController.text;
+                    valoresDigitados['pH'] = phController.text;
+
+                    // Calcular os resultados IQA
+                    final resultadosIQA = {
+                      'DBO': calcularIQADBO(parseInput(dboController.text))
+                          .toDouble(),
+                      'OD': calcularIQAOD(parseInput(odController.text))
+                          .toDouble(),
+                      'Fósforo':
+                          calcularIQAFosforo(parseInput(fosforoController.text))
+                              .toDouble(),
+                      'Nitrogênio': calcularIQANitrogenio(
+                              parseInput(nitrogenioController.text))
+                          .toDouble(),
+                      'Coliformes': calcularIQAColiformes(
+                              parseInput(coliformesController.text))
+                          .toDouble(),
+                      'Turbidez': calcularIQATurbidez(
+                              parseInput(turbidezController.text))
+                          .toDouble(),
+                      'Sólidos Suspensos': calcularIQASolidosTotais(
+                              parseInput(solidosSuspensosController.text))
+                          .toDouble(),
+                      'Temperatura': calcularIQADiferencaTemperatura(
+                              parseInput(temperaturaController.text))
+                          .toDouble(),
+                      'pH': calcularIQApH(parseInput(phController.text))
+                          .toDouble(),
+                      'IQA': pow(calcularIQADBO(parseInput(dboController.text)),
+                                  0.10)
+                              .toDouble() *
+                          pow(calcularIQAOD(parseInput(odController.text)), 0.17)
+                              .toDouble() *
+                          pow(calcularIQAFosforo(parseInput(fosforoController.text)), 0.10)
+                              .toDouble() *
+                          pow(calcularIQANitrogenio(parseInput(nitrogenioController.text)), 0.10)
+                              .toDouble() *
+                          pow(calcularIQAColiformes(parseInput(coliformesController.text)), 0.15)
+                              .toDouble() *
+                          pow(calcularIQATurbidez(parseInput(turbidezController.text)), 0.08)
+                              .toDouble() *
+                          pow(
+                                  calcularIQASolidosTotais(parseInput(
+                                      solidosSuspensosController.text)),
+                                  0.08)
+                              .toDouble() *
+                          pow(
+                                  calcularIQADiferencaTemperatura(
+                                      parseInput(temperaturaController.text)),
+                                  0.10)
+                              .toDouble() *
+                          pow(calcularIQApH(parseInput(phController.text)), 0.12)
+                              .toDouble(),
+                    };
+
+                    // Passar os valores para a próxima página
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ResultPage(
+                          valoresIQA: resultadosIQA,
+                          valoresDigitados:
+                              valoresDigitados, // Passe os valores digitados
+                        ),
+                      ),
+                    );
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
@@ -503,7 +581,7 @@ class _CalculadoraiqaState extends State<Calculadoraiqa> {
     } else if (ph >= 10 && ph < 12) {
       return 633 - 106.5 * ph + 4.5 * pow(ph, 2);
     } else if (ph >= 12 && ph <= 14) {
-      return 2.00;
+      return 3.00;
     } else {
       throw Exception('Valor de pH fora do intervalo esperado');
     }

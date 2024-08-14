@@ -1,9 +1,12 @@
+import 'package:calculeadora/calculadora_iqa_page.dart';
 import 'package:calculeadora/pdf.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
 
 class ResultPage extends StatefulWidget {
-  const ResultPage({super.key});
+  final Map<String, double> valoresIQA;
+  final Map<String, String> valoresDigitados;
+  ResultPage({required this.valoresIQA, required this.valoresDigitados});
 
   @override
   State<ResultPage> createState() => _ResultPageState();
@@ -12,12 +15,9 @@ class ResultPage extends StatefulWidget {
 class _ResultPageState extends State<ResultPage> {
   @override
   Widget build(BuildContext context) {
-    final valoresIQA = {
-      'Oxigênio Dissolvido': 8.5,
-      'pH': 7.2,
-      'Temperatura': 25.0,
-      'Turbidez': 3.4,
-    };
+    final valoresIQA = widget.valoresIQA;
+    final valoresDigitados = widget.valoresDigitados;
+
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
@@ -51,10 +51,10 @@ class _ResultPageState extends State<ResultPage> {
               const SizedBox(
                 height: 30,
               ),
-              const Text(
-                "O índice de qualidade IQA é: 80",
+              Text(
+                "O índice de qualidade IQA é: ${valoresIQA['IQA']}",
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 20),
+                style: const TextStyle(fontSize: 20),
               ),
               Container(
                 padding: const EdgeInsets.all(20),
@@ -104,7 +104,9 @@ class _ResultPageState extends State<ResultPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   ElevatedButton(
-                    onPressed: null,
+                    onPressed: () {
+                      print("");
+                    },
                     style: TextButton.styleFrom(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
@@ -112,7 +114,10 @@ class _ResultPageState extends State<ResultPage> {
                     ),
                     child: const Text("Salvar"),
                   ),
-                  DownloadPDFButton(valoresIQA: valoresIQA),
+                  DownloadPDFButton(
+                    valoresIQA: valoresIQA,
+                    valoresDigitados: valoresDigitados,
+                  ),
                 ],
               )
             ],
