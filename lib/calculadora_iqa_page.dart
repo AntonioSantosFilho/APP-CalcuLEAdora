@@ -220,7 +220,7 @@ class _CalculadoraiqaState extends State<Calculadoraiqa> {
                 ),
                 contentPadding: EdgeInsets.symmetric(horizontal: 10),
                 hintText: '0,00',
-                hintStyle: TextStyle(color: Color.fromARGB(255, 207, 207, 207)),
+                hintStyle: TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
               ),
             ),
           ),
@@ -253,9 +253,9 @@ class _CalculadoraiqaState extends State<Calculadoraiqa> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Fórmula usada"),
+          title: Text("Fórmula em uso"),
           content: Text(
-              "Para o valor $parsedValue, a fórmula usada é:\n\n$formulaUsed\n\nO resultado é: $result"),
+              "Para o valor $parsedValue, a fórmula usada é:\n\n$formulaUsed\n\nO resultado do QI é: $result"),
           actions: [
             TextButton(
               child: Text("Fechar"),
