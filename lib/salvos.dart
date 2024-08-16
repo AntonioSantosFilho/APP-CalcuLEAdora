@@ -1,7 +1,5 @@
 import 'dart:convert';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SavedResultsPage extends StatefulWidget {
@@ -44,20 +42,26 @@ class _SavedResultsPageState extends State<SavedResultsPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Detalhes dos Valores Digitados'),
+          title: Text(
+            'Detalhes dos Valores Digitados',
+            textAlign: TextAlign.center,
+          ),
           content: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                SizedBox(
+                  height: 20,
+                ),
                 Table(
                   border: TableBorder.all(color: Colors.black),
                   children: [
-                    TableRow(
+                    const TableRow(
                       children: [
                         FractionallySizedBox(
                           widthFactor: 0.6,
                           child: Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: EdgeInsets.all(0),
                             child: Text(
                               'Parâmetro',
                               style: TextStyle(fontWeight: FontWeight.bold),
@@ -67,7 +71,7 @@ class _SavedResultsPageState extends State<SavedResultsPage> {
                         FractionallySizedBox(
                           widthFactor: 0.4,
                           child: Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: EdgeInsets.all(0),
                             child: Text(
                               'Entrada',
                               style: TextStyle(fontWeight: FontWeight.bold),
@@ -82,12 +86,16 @@ class _SavedResultsPageState extends State<SavedResultsPage> {
                       return TableRow(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: const EdgeInsets.all(4.0),
                             child: Text(parameterWithUnit),
                           ),
                           Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(entry.value),
+                            padding: const EdgeInsets.all(4.0),
+                            child: Text(
+                              entry.value,
+                              style: TextStyle(),
+                              textAlign: TextAlign.center,
+                            ),
                           ),
                         ],
                       );
@@ -95,11 +103,15 @@ class _SavedResultsPageState extends State<SavedResultsPage> {
                   ],
                 ),
                 Divider(thickness: 2),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                SizedBox(
+                  height: 20,
+                ),
+                Container(
+                  width: double.infinity,
                   child: Text(
                     'Resultado do IQA: ${iqaValue.toStringAsFixed(2)}',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                    textAlign: TextAlign.center,
                   ),
                 ),
               ],
@@ -132,6 +144,16 @@ class _SavedResultsPageState extends State<SavedResultsPage> {
     return parameterUnits.containsKey(parameter)
         ? '$parameter (${parameterUnits[parameter]})'
         : parameter;
+  }
+
+  void _deleteResult(String timestamp) async {
+    String? existingData = prefs.getString('timeData');
+    if (existingData != null) {
+      Map<String, dynamic> dataMap = json.decode(existingData);
+      dataMap.remove(timestamp);
+      await prefs.setString('timeData', json.encode(dataMap));
+      setState(() {});
+    }
   }
 
   @override
@@ -170,15 +192,29 @@ class _SavedResultsPageState extends State<SavedResultsPage> {
                   child: ListTile(
                     title: Text('IQA: ${iqaValue.toStringAsFixed(2)}'),
                     subtitle: Text('Salvo em: $formattedDate'),
-                    trailing:
-                        Icon(Icons.info_outline, color: Colors.blueAccent),
-                    onTap: () {
-                      _showDetailsPopup(
-                        context,
-                        Map<String, String>.from(data['valoresDigitados']),
-                        iqaValue,
-                      );
-                    },
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.delete, color: Colors.redAccent),
+                          onPressed: () {
+                            _deleteResult(timestamp);
+                          },
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.info_outline,
+                              color: Colors.blueAccent),
+                          onPressed: () {
+                            _showDetailsPopup(
+                              context,
+                              Map<String, String>.from(
+                                  data['valoresDigitados']),
+                              iqaValue,
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 );
               },

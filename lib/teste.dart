@@ -121,8 +121,13 @@ class MainPageC extends StatelessWidget {
                                         builder: (context) => Calculadoraiqa()),
                                   );
                                 }),
-                                buildCard('assets/2.png', () {
-                                  print('Card2 clicked!');
+                                buildCard('assets/4.png', () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            IetReservatorios()),
+                                  );
                                 }),
                               ],
                             ),
@@ -136,7 +141,7 @@ class MainPageC extends StatelessWidget {
                                         builder: (context) => IetRios()),
                                   );
                                 }),
-                                buildCard('assets/4.png', () {
+                                buildCard('assets/2.png', () {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(

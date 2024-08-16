@@ -17,9 +17,10 @@ class PDFGenerator {
     final pdf = pw.Document();
 
     // Carregar as imagens antes de adicionar a página
-    final image1 = pw.MemoryImage(await _loadImage('assets/1.png'));
-    final image2 = pw.MemoryImage(await _loadImage('assets/2.png'));
-    final image3 = pw.MemoryImage(await _loadImage('assets/3.png'));
+    final image1 = pw.MemoryImage(await _loadImage('assets/lea.png'));
+    final image2 = pw.MemoryImage(await _loadImage('assets/petsaneamento.png'));
+    final image3 = pw.MemoryImage(await _loadImage('assets/univasf.png'));
+    final image4 = pw.MemoryImage(await _loadImage('assets/petmec.png'));
 
     // Definindo os pesos dos parâmetros e unidades
     final pesos = {
@@ -56,7 +57,9 @@ class PDFGenerator {
       'Nota Elevada\nao Peso'
     ];
 
-    final tableData = valoresCalculados.entries.map((entry) {
+    final tableData = valoresCalculados.entries
+        .where((entry) => entry.key != 'IQA') // Filtra o parâmetro "IQA"
+        .map((entry) {
       final parametro = entry.key;
       final valorDigitado = valoresDigitados[parametro] ?? 'N/A';
       final valorCalculado = entry.value;
@@ -85,15 +88,16 @@ class PDFGenerator {
             children: [
               // Posicionando as imagens no topo da página
               pw.Positioned(
-                top: 1, // Define a distância do topo da página
+                top: 0, // Define a distância do topo da página
                 left: 0,
                 right: 0,
                 child: pw.Row(
                   mainAxisAlignment: pw.MainAxisAlignment.spaceEvenly,
                   children: [
-                    pw.Image(image1, width: 24, height: 24),
-                    pw.Image(image2, width: 24, height: 24),
-                    pw.Image(image3, width: 24, height: 24),
+                    pw.Image(image1, height: 30),
+                    pw.Image(image2, height: 30),
+                    pw.Image(image3, height: 30),
+                    pw.Image(image4, height: 30),
                   ],
                 ),
               ),
@@ -101,7 +105,7 @@ class PDFGenerator {
                 crossAxisAlignment: pw.CrossAxisAlignment.start,
                 children: [
                   pw.SizedBox(
-                      height: 60), // Adiciona um espaço abaixo das imagens
+                      height: 100), // Adiciona um espaço abaixo das imagens
                   pw.Center(
                     child: pw.Text(
                       'Relatório de Qualidade da Água - $dataHoraAtual',
@@ -182,7 +186,7 @@ class DownloadPDFButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
+    return ElevatedButton.icon(
       onPressed: () async {
         final pdfGenerator = PDFGenerator();
         final pdfData =
@@ -194,7 +198,8 @@ class DownloadPDFButton extends StatelessWidget {
           filename: 'relatorio_iqa.pdf',
         );
       },
-      child: Text('Baixar Relatório PDF'),
+      icon: const Icon(Icons.save_alt),
+      label: const Text('Baixar Relatório PDF'),
     );
   }
 }

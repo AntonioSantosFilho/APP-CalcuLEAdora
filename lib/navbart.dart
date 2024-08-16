@@ -50,7 +50,7 @@ class _NavbartState extends State<Navbart> {
           ],
         ),
         bottomNavigationBar: SalomonBottomBar(
-          backgroundColor: Color.fromARGB(202, 181, 212, 250),
+          backgroundColor: Color(0xFFbac6ff),
           currentIndex: _currentIndex,
           onTap: (i) => setState(() => _currentIndex = i),
           items: [
@@ -58,7 +58,7 @@ class _NavbartState extends State<Navbart> {
             SalomonBottomBarItem(
               icon: Icon(Icons.home),
               title: Text("Inicio"),
-              selectedColor: Color.fromARGB(255, 42, 0, 229),
+              selectedColor: Color.fromARGB(255, 7, 77, 228),
             ),
             SalomonBottomBarItem(
               icon: Icon(Icons.info),
@@ -75,7 +75,7 @@ class _NavbartState extends State<Navbart> {
             SalomonBottomBarItem(
               icon: Icon(Icons.exit_to_app),
               title: Text("Sair"),
-              selectedColor: Colors.teal,
+              selectedColor: Color.fromARGB(255, 252, 2, 2),
             ),
           ],
         ),
