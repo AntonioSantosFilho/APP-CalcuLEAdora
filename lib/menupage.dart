@@ -1,12 +1,15 @@
-import 'package:calculeadora/calculadora_iet_reseratorios.dart';
-import 'package:calculeadora/calculadora_iet_rios.dart';
-import 'package:calculeadora/calculadora_iqa_page.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-class MainPageC extends StatelessWidget {
-  const MainPageC({super.key});
+class MainPageC extends StatefulWidget {
+  final Function(int) onTabChange;
+  const MainPageC({super.key, required this.onTabChange});
 
+  @override
+  State<MainPageC> createState() => _MainPageCState();
+}
+
+class _MainPageCState extends State<MainPageC> {
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
@@ -20,7 +23,7 @@ class MainPageC extends StatelessWidget {
         screenWidth > 500 ? screenWidth * 0.16 : screenWidth * 0.4;
 
     const EdgeInsets padding = EdgeInsets.all(16.0);
-    const TextStyle titleStyle = TextStyle(
+    final TextStyle titleStyle = GoogleFonts.montserrat(
       fontSize: 25,
       fontWeight: FontWeight.bold,
     );
@@ -37,6 +40,11 @@ class MainPageC extends StatelessWidget {
       return Flexible(
         fit: FlexFit.loose,
         child: Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+            side: const BorderSide(
+                color: Color.fromARGB(255, 71, 71, 71), width: 0.2),
+          ),
           child: InkWell(
             onTap: () => onTap(),
             child: Container(
@@ -73,9 +81,15 @@ class MainPageC extends StatelessWidget {
                   child: Column(
                     children: [
                       const SizedBox(height: 10),
-                      const Text(
+                      Text(
                         "Índices de Qualidades",
-                        style: titleStyle,
+                        style: GoogleFonts.gowunBatang(
+                          textStyle: const TextStyle(
+                              color: Color.fromARGB(255, 0, 0, 0),
+                              fontSize: 26,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: .5),
+                        ),
                       ),
                       const SizedBox(height: 30),
                       if (screenWidth > 500)
@@ -83,28 +97,16 @@ class MainPageC extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             buildCard('assets/1.png', () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Calculadoraiqa()),
-                              );
+                              widget.onTabChange(7);
                             }),
                             buildCard('assets/2.png', () {
-                              print('Card2 clicked!');
+                              widget.onTabChange(4);
                             }),
                             buildCard('assets/3.png', () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => IetRios()),
-                              );
+                              widget.onTabChange(5);
                             }),
                             buildCard('assets/4.png', () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => IetReservatorios()),
-                              );
+                              widget.onTabChange(6);
                             }),
                           ],
                         )
@@ -115,19 +117,10 @@ class MainPageC extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 buildCard('assets/1.png', () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => Calculadoraiqa()),
-                                  );
+                                  widget.onTabChange(7);
                                 }),
                                 buildCard('assets/4.png', () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            IetReservatorios()),
-                                  );
+                                  widget.onTabChange(6);
                                 }),
                               ],
                             ),
@@ -135,19 +128,10 @@ class MainPageC extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 buildCard('assets/3.png', () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => IetRios()),
-                                  );
+                                  widget.onTabChange(5);
                                 }),
                                 buildCard('assets/2.png', () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            IetReservatorios()),
-                                  );
+                                  widget.onTabChange(4);
                                 }),
                               ],
                             ),

@@ -1,0 +1,2 @@
+C:/Users/toim6/OneDrive/Documentos/projetos2025/calculeadora/android/app/.cxx/RelWithDebInfo/k5113u6a/arm64-v8a/CMakeFiles/edit_cache.dir
+C:/Users/toim6/OneDrive/Documentos/projetos2025/calculeadora/android/app/.cxx/RelWithDebInfo/k5113u6a/arm64-v8a/CMakeFiles/rebuild_cache.dir

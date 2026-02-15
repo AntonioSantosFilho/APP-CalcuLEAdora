@@ -1,11 +1,8 @@
-import 'package:calculeadora/calculadora_iqa_page.dart';
 import 'package:calculeadora/navbart.dart';
-import 'package:calculeadora/result_page.dart';
 import 'package:flutter/material.dart';
-import 'onboarding_initial.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {

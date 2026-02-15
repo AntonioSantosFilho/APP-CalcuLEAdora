@@ -1,7 +1,9 @@
 import 'package:calculeadora/result_page.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
+import 'package:google_fonts/google_fonts.dart';
 
+// Controllers para os campos de entrada
 TextEditingController dboController = TextEditingController();
 TextEditingController odController = TextEditingController();
 TextEditingController fosforoController = TextEditingController();
@@ -20,227 +22,507 @@ class Calculadoraiqa extends StatefulWidget {
 }
 
 class _CalculadoraiqaState extends State<Calculadoraiqa> {
+  // Mapa para armazenar ícones para cada parâmetro
+  final Map<String, IconData> parameterIcons = {
+    "DBO": Icons.opacity,
+    "OD": Icons.air,
+    "Fósforo": Icons.science,
+    "Nitrogênio Total": Icons.eco,
+    "Coliformes Totais": Icons.bug_report,
+    "Turbidez": Icons.water,
+    "Sólidos Suspensos Totais": Icons.grain,
+    "Diferença de Temperatura": Icons.thermostat,
+    "pH": Icons.balance,
+  };
+
+  // Mapa para armazenar descrições curtas para cada parâmetro
+  final Map<String, String> parameterDescriptions = {
+    "DBO":
+        "Demanda Bioquímica de Oxigênio - mede a quantidade de oxigênio consumido na degradação da matéria orgânica.",
+    "OD":
+        "Oxigênio Dissolvido - indica a quantidade de oxigênio disponível na água para a respiração dos organismos aquáticos.",
+    "Fósforo":
+        "Nutriente essencial para os organismos aquáticos, mas em excesso pode causar eutrofização.",
+    "Nitrogênio Total":
+        "Nutriente importante para o crescimento de plantas aquáticas, mas em excesso pode causar problemas ambientais.",
+    "Coliformes Totais": "Indicadores de contaminação fecal na água.",
+    "Turbidez":
+        "Medida da claridade da água, afetada por partículas suspensas.",
+    "Sólidos Suspensos Totais":
+        "Partículas sólidas suspensas na água que podem afetar sua qualidade.",
+    "Diferença de Temperatura":
+        "Variação de temperatura que pode afetar os organismos aquáticos.",
+    "pH":
+        "Medida da acidez ou alcalinidade da água, afeta a vida aquática e processos químicos.",
+  };
+
+  // Lista para organizar os parâmetros em dois grupos
+  final List<Map<String, dynamic>> parameterGroups = [
+    {
+      "title": "Parâmetros Físicos",
+      "color": Color(0xFF3486EB),
+      "icon": Icons.water_drop,
+      "parameters": [
+        "Turbidez",
+        "Sólidos Suspensos Totais",
+        "Diferença de Temperatura"
+      ]
+    },
+    {
+      "title": "Parâmetros Químicos",
+      "color": Color(0xFF34C759),
+      "icon": Icons.science,
+      "parameters": ["DBO", "OD", "Fósforo", "Nitrogênio Total", "pH"]
+    },
+    {
+      "title": "Parâmetros Biológicos",
+      "color": Color(0xFFFF9500),
+      "icon": Icons.bug_report,
+      "parameters": ["Coliformes Totais"]
+    }
+  ];
+
   @override
   Widget build(BuildContext context) {
     final Map<String, String> valoresDigitados = {};
+    final screenHeight = MediaQuery.of(context).size.height;
+    final containerHeight =
+        screenHeight * 0.75; // Aumentei um pouco a altura do container
 
-    return Scaffold(
-      backgroundColor: Color.fromARGB(255, 255, 255, 255),
-      appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 68, 103, 247),
-        title: Text('CalcuLEAdora',
-            style: TextStyle(color: Color(0xFFFFFFFF)),
-            textAlign: TextAlign.center),
-        centerTitle: true,
-        leading: IconButton(
-          color: Color.fromARGB(255, 255, 255, 255),
-          icon: Icon(Icons.chevron_left),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: Container(
+        height: containerHeight,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: const BorderRadius.vertical(
+            top: Radius.circular(30),
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 10,
+              offset: const Offset(0, -5),
+            ),
+          ],
         ),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(height: 10),
-            _buildInputField(
-                "DBO (mg/L)", dboController, calcularIQADBO, _getFormulaDBO),
-            _buildInputField(
-                "OD (mg/L)", odController, calcularIQAOD, _getFormulaOD),
-            _buildInputField("Fósforo (mg/L)", fosforoController,
-                calcularIQAFosforo, _getFormulaFosforo),
-            _buildInputField("Nitrogênio Total (mg/L)", nitrogenioController,
-                calcularIQANitrogenio, _getFormulaNitrogenio),
-            _buildInputField("Coliformes Totais (NMP)", coliformesController,
-                calcularIQAColiformes, _getFormulaColiformes),
-            _buildInputField("Turbidez (NTU)", turbidezController,
-                calcularIQATurbidez, _getFormulaTurbidez),
-            _buildInputField(
-                "Sólidos Suspensos Totais (mg/L)",
-                solidosSuspensosController,
-                calcularIQASolidosTotais,
-                _getFormulaSolidosTotais),
-            _buildInputField("Temperatura (°C)", temperaturaController,
-                calcularIQADiferencaTemperatura, _getFormulaTemperatura),
-            _buildInputField("pH", phController, calcularIQApH, _getFormulaPH),
-            SizedBox(height: 12),
-            Container(
-              width: double.infinity,
-              margin: EdgeInsets.symmetric(horizontal: 20.0),
-              child: ElevatedButton(
-                onPressed: () {
-                  if (_areAllFieldsFilled()) {
-                    // Capturar os valores digitados
-                    valoresDigitados['DBO'] = dboController.text;
-                    valoresDigitados['OD'] = odController.text;
-                    valoresDigitados['Fósforo'] = fosforoController.text;
-                    valoresDigitados['Nitrogênio'] = nitrogenioController.text;
-                    valoresDigitados['Coliformes'] = coliformesController.text;
-                    valoresDigitados['Turbidez'] = turbidezController.text;
-                    valoresDigitados['Sólidos Suspensos'] =
-                        solidosSuspensosController.text;
-                    valoresDigitados['Temperatura'] =
-                        temperaturaController.text;
-                    valoresDigitados['pH'] = phController.text;
-
-                    // Calcular os resultados IQA
-                    final resultadosIQA = {
-                      'DBO': calcularIQADBO(parseInput(dboController.text))
-                          .toDouble(),
-                      'OD': calcularIQAOD(parseInput(odController.text))
-                          .toDouble(),
-                      'Fósforo':
-                          calcularIQAFosforo(parseInput(fosforoController.text))
-                              .toDouble(),
-                      'Nitrogênio': calcularIQANitrogenio(
-                              parseInput(nitrogenioController.text))
-                          .toDouble(),
-                      'Coliformes': calcularIQAColiformes(
-                              parseInput(coliformesController.text))
-                          .toDouble(),
-                      'Turbidez': calcularIQATurbidez(
-                              parseInput(turbidezController.text))
-                          .toDouble(),
-                      'Sólidos Suspensos': calcularIQASolidosTotais(
-                              parseInput(solidosSuspensosController.text))
-                          .toDouble(),
-                      'Temperatura': calcularIQADiferencaTemperatura(
-                              parseInput(temperaturaController.text))
-                          .toDouble(),
-                      'pH': calcularIQApH(parseInput(phController.text))
-                          .toDouble(),
-                      'IQA': pow(calcularIQADBO(parseInput(dboController.text)),
-                                  0.10)
-                              .toDouble() *
-                          pow(calcularIQAOD(parseInput(odController.text)), 0.17)
-                              .toDouble() *
-                          pow(calcularIQAFosforo(parseInput(fosforoController.text)), 0.10)
-                              .toDouble() *
-                          pow(calcularIQANitrogenio(parseInput(nitrogenioController.text)), 0.10)
-                              .toDouble() *
-                          pow(calcularIQAColiformes(parseInput(coliformesController.text)), 0.15)
-                              .toDouble() *
-                          pow(calcularIQATurbidez(parseInput(turbidezController.text)), 0.08)
-                              .toDouble() *
-                          pow(
-                                  calcularIQASolidosTotais(parseInput(
-                                      solidosSuspensosController.text)),
-                                  0.08)
-                              .toDouble() *
-                          pow(
-                                  calcularIQADiferencaTemperatura(
-                                      parseInput(temperaturaController.text)),
-                                  0.10)
-                              .toDouble() *
-                          pow(calcularIQApH(parseInput(phController.text)), 0.12)
-                              .toDouble(),
-                    };
-
-                    // Passar os valores para a próxima página
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ResultPage(
-                          valoresIQA: resultadosIQA,
-                          valoresDigitados:
-                              valoresDigitados, // Passe os valores digitados
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              // Título da seção
+              Container(
+                margin: const EdgeInsets.only(bottom: 16),
+                child: Column(
+                  children: [
+                    Text(
+                      "Calculadora IQA",
+                      style: GoogleFonts.poppins(
+                        textStyle: const TextStyle(
+                          color: Color(0xFF2666E0),
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                    );
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                          content:
-                              Text('Por favor, preencha todos os campos.')),
-                    );
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.all(15.0),
-                  backgroundColor: Colors.blue,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    Text(
+                      "Preencha os parâmetros abaixo",
+                      style: GoogleFonts.poppins(
+                        textStyle: const TextStyle(
+                          color: Colors.grey,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              // Área de rolagem para os parâmetros
+              Expanded(
+                child: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  child: Column(
+                    children: [
+                      // Iteramos pelos grupos de parâmetros
+                      ...parameterGroups
+                          .map((group) => _buildParameterGroup(group)),
+
+                      const SizedBox(height: 20),
+                    ],
                   ),
                 ),
-                child: Text(
-                  "Calcular",
-                  style: TextStyle(
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
+              ),
+
+              // Botão de calcular (fixo na parte inferior)
+              Container(
+                width: double.infinity,
+                margin: const EdgeInsets.only(top: 16),
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (_areAllFieldsFilled()) {
+                      // Capturar os valores digitados
+                      valoresDigitados['DBO'] = dboController.text;
+                      valoresDigitados['OD'] = odController.text;
+                      valoresDigitados['Fósforo'] = fosforoController.text;
+                      valoresDigitados['Nitrogênio'] =
+                          nitrogenioController.text;
+                      valoresDigitados['Coliformes'] =
+                          coliformesController.text;
+                      valoresDigitados['Turbidez'] = turbidezController.text;
+                      valoresDigitados['Sólidos Suspensos'] =
+                          solidosSuspensosController.text;
+                      valoresDigitados['Temperatura'] =
+                          temperaturaController.text;
+                      valoresDigitados['pH'] = phController.text;
+
+                      // Calcular os resultados IQA
+                      final resultadosIQA = {
+                        'DBO': calcularIQADBO(parseInput(dboController.text))
+                            .toDouble(),
+                        'OD': calcularIQAOD(parseInput(odController.text))
+                            .toDouble(),
+                        'Fósforo': calcularIQAFosforo(
+                                parseInput(fosforoController.text))
+                            .toDouble(),
+                        'Nitrogênio': calcularIQANitrogenio(
+                                parseInput(nitrogenioController.text))
+                            .toDouble(),
+                        'Coliformes': calcularIQAColiformes(
+                                parseInput(coliformesController.text))
+                            .toDouble(),
+                        'Turbidez': calcularIQATurbidez(
+                                parseInput(turbidezController.text))
+                            .toDouble(),
+                        'Sólidos Suspensos': calcularIQASolidosTotais(
+                                parseInput(solidosSuspensosController.text))
+                            .toDouble(),
+                        'Temperatura': calcularIQADiferencaTemperatura(
+                                parseInput(temperaturaController.text))
+                            .toDouble(),
+                        'pH': calcularIQApH(parseInput(phController.text))
+                            .toDouble(),
+                        'IQA': pow(
+                                    calcularIQADBO(
+                                        parseInput(dboController.text)),
+                                    0.10)
+                                .toDouble() *
+                            pow(calcularIQAOD(parseInput(odController.text)), 0.17)
+                                .toDouble() *
+                            pow(calcularIQAFosforo(parseInput(fosforoController.text)), 0.10)
+                                .toDouble() *
+                            pow(calcularIQANitrogenio(parseInput(nitrogenioController.text)), 0.10)
+                                .toDouble() *
+                            pow(
+                                    calcularIQAColiformes(
+                                        parseInput(coliformesController.text)),
+                                    0.15)
+                                .toDouble() *
+                            pow(calcularIQATurbidez(parseInput(turbidezController.text)), 0.08)
+                                .toDouble() *
+                            pow(calcularIQASolidosTotais(parseInput(solidosSuspensosController.text)), 0.08)
+                                .toDouble() *
+                            pow(
+                                    calcularIQADiferencaTemperatura(
+                                        parseInput(temperaturaController.text)),
+                                    0.10)
+                                .toDouble() *
+                            pow(calcularIQApH(parseInput(phController.text)), 0.12)
+                                .toDouble(),
+                      };
+
+                      // Passar os valores para a próxima página
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ResultPage(
+                            valoresIQA: resultadosIQA,
+                            valoresDigitados: valoresDigitados,
+                          ),
+                        ),
+                      );
+                    } else {
+                      _showErrorSnackbar();
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.all(16.0),
+                    backgroundColor: const Color(0xFF2666E0),
+                    foregroundColor: Colors.white,
+                    elevation: 3,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.calculate, size: 24),
+                      const SizedBox(width: 10),
+                      Text(
+                        "Calcular IQA",
+                        style: GoogleFonts.poppins(
+                          textStyle: const TextStyle(
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  // Widget para construir um grupo de parâmetros
+  Widget _buildParameterGroup(Map<String, dynamic> group) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Cabeçalho do grupo
+          Container(
+            margin: const EdgeInsets.only(left: 8, bottom: 8),
+            child: Row(
+              children: [
+                Icon(
+                  group["icon"],
+                  color: group["color"],
+                  size: 22,
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  group["title"],
+                  style: GoogleFonts.poppins(
+                    textStyle: TextStyle(
+                      color: group["color"],
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          // Parâmetros no grupo
+          ...group["parameters"].map<Widget>((paramName) {
+            // Mapeamento dos nomes de parâmetros para os controllers
+            final Map<String, TextEditingController> controllerMap = {
+              "DBO": dboController,
+              "OD": odController,
+              "Fósforo": fosforoController,
+              "Nitrogênio Total": nitrogenioController,
+              "Coliformes Totais": coliformesController,
+              "Turbidez": turbidezController,
+              "Sólidos Suspensos Totais": solidosSuspensosController,
+              "Diferença de Temperatura": temperaturaController,
+              "pH": phController,
+            };
+
+            // Mapeamento dos nomes de parâmetros para as funções de cálculo
+            final Map<String, Function> calculoMap = {
+              "DBO": calcularIQADBO,
+              "OD": calcularIQAOD,
+              "Fósforo": calcularIQAFosforo,
+              "Nitrogênio Total": calcularIQANitrogenio,
+              "Coliformes Totais": calcularIQAColiformes,
+              "Turbidez": calcularIQATurbidez,
+              "Sólidos Suspensos Totais": calcularIQASolidosTotais,
+              "Diferença de Temperatura": calcularIQADiferencaTemperatura,
+              "pH": calcularIQApH,
+            };
+
+            // Mapeamento dos nomes de parâmetros para as funções de descrição de fórmula
+            final Map<String, Function> formulaDescMap = {
+              "DBO": _getFormulaDBO,
+              "OD": _getFormulaOD,
+              "Fósforo": _getFormulaFosforo,
+              "Nitrogênio Total": _getFormulaNitrogenio,
+              "Coliformes Totais": _getFormulaColiformes,
+              "Turbidez": _getFormulaTurbidez,
+              "Sólidos Suspensos Totais": _getFormulaSolidosTotais,
+              "Diferença de Temperatura": _getFormulaTemperatura,
+              "pH": _getFormulaPH,
+            };
+
+            // Mapeamento dos nomes de parâmetros para os títulos de campo
+            final Map<String, String> fieldTitleMap = {
+              "DBO": "DBO (mg/L)",
+              "OD": "OD (%saturação)",
+              "Fósforo": "Fósforo (mg/L)",
+              "Nitrogênio Total": "Nitrogênio Total (mg/L)",
+              "Coliformes Totais": "Coliformes Totais (NMP/100mL)",
+              "Turbidez": "Turbidez (NTU)",
+              "Sólidos Suspensos Totais": "Sólidos Suspensos Totais (mg/L)",
+              "Diferença de Temperatura": "Diferença de Temperatura (°C)",
+              "pH": "pH",
+            };
+
+            return _buildParameterCard(
+              fieldTitleMap[paramName] ?? paramName,
+              controllerMap[paramName] ?? TextEditingController(),
+              calculoMap[paramName] ?? ((v) => 0.0),
+              formulaDescMap[paramName] ?? ((v) => ""),
+              parameterIcons[paramName] ?? Icons.help_outline,
+              parameterDescriptions[paramName] ?? "",
+              group["color"],
+            );
+          }).toList(),
+        ],
+      ),
+    );
+  }
+
+  // Widget para construir um cartão de parâmetro individual
+  Widget _buildParameterCard(
+    String labelText,
+    TextEditingController controller,
+    Function formulaCallback,
+    Function formulaDescriptionCallback,
+    IconData icon,
+    String description,
+    Color groupColor,
+  ) {
+    return Card(
+      margin: const EdgeInsets.only(bottom: 10),
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Cabeçalho do parâmetro com ícone e título
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: groupColor.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Icon(icon, color: groupColor, size: 20),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    labelText,
+                    style: GoogleFonts.poppins(
+                      textStyle: const TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xFF333333),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 8),
+
+            // Descrição do parâmetro
+            Container(
+              margin: const EdgeInsets.only(left: 8),
+              child: Text(
+                description,
+                style: GoogleFonts.poppins(
+                  textStyle: const TextStyle(
+                    fontSize: 12,
+                    color: Colors.grey,
                   ),
                 ),
               ),
             ),
-            SizedBox(height: 20),
+
+            const SizedBox(height: 12),
+
+            // Campo de entrada
+            TextField(
+              keyboardType: const TextInputType.numberWithOptions(
+                  signed: true, decimal: true),
+              controller: controller,
+              style: GoogleFonts.poppins(
+                textStyle: const TextStyle(
+                  fontSize: 16,
+                  color: Color(0xFF333333),
+                ),
+              ),
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: Colors.grey.shade100,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide.none,
+                ),
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                hintText: '0,00',
+                hintStyle: TextStyle(color: Colors.grey.shade400),
+                prefixIcon: Icon(Icons.input, color: Colors.grey.shade500),
+              ),
+            ),
+
+            // Botão para mostrar a fórmula
+            Align(
+              alignment: Alignment.centerRight,
+              child: TextButton.icon(
+                icon: Icon(Icons.info_outline, size: 16, color: groupColor),
+                label: Text(
+                  "Ver fórmula",
+                  style: GoogleFonts.poppins(
+                    textStyle: TextStyle(
+                      fontSize: 12,
+                      color: groupColor,
+                    ),
+                  ),
+                ),
+                onPressed: () {
+                  _showFormulaDialog(
+                    context,
+                    controller.text,
+                    formulaCallback,
+                    formulaDescriptionCallback,
+                    labelText,
+                    icon,
+                    groupColor,
+                  );
+                },
+                style: TextButton.styleFrom(
+                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  minimumSize: Size.zero,
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                ),
+              ),
+            ),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildInputField(String labelText, TextEditingController controller,
-      Function formulaCallback, Function formulaDescriptionCallback) {
-    return Container(
-      margin: EdgeInsets.all(6),
-      padding: EdgeInsets.all(6),
-      decoration: BoxDecoration(
-        color: Color(0x772666E0),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            flex: 6,
-            child: Text(
-              labelText,
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              textAlign: TextAlign.center,
-            ),
-          ),
-          Expanded(
-            flex: 3,
-            child: TextField(
-              keyboardType: TextInputType.number,
-              controller: controller,
-              style:
-                  TextStyle(fontSize: 16, color: Color.fromARGB(255, 0, 0, 0)),
-              textAlign: TextAlign.center,
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: Color(0x772666E0),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20),
-                  borderSide: BorderSide(color: Color(0x772666E0)),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15),
-                  borderSide: BorderSide(color: Color(0x772666E0)),
-                ),
-                contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                hintText: '0,00',
-                hintStyle: TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
-              ),
-            ),
-          ),
-          IconButton(
-            icon: Icon(Icons.help_outline),
-            onPressed: () {
-              _showFormulaDialog(context, controller.text, formulaCallback,
-                  formulaDescriptionCallback);
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _showFormulaDialog(BuildContext context, String inputValue,
-      Function formulaCallback, Function formulaDescriptionCallback) {
+  void _showFormulaDialog(
+    BuildContext context,
+    String inputValue,
+    Function formulaCallback,
+    Function formulaDescriptionCallback,
+    String parameterName,
+    IconData icon,
+    Color groupColor,
+  ) {
     double parsedValue = parseInput(inputValue);
     String formulaUsed;
     double result;
+
     try {
       result = formulaCallback(parsedValue);
       formulaUsed = formulaDescriptionCallback(parsedValue);
@@ -252,20 +534,214 @@ class _CalculadoraiqaState extends State<Calculadoraiqa> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text("Fórmula em uso"),
-          content: Text(
-              "Para o valor $parsedValue, a fórmula usada é:\n\n$formulaUsed\n\nO resultado do QI é: $result"),
-          actions: [
-            TextButton(
-              child: Text("Fechar"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          child: Container(
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: const [
+                BoxShadow(
+                  color: Colors.black26,
+                  blurRadius: 10.0,
+                  offset: Offset(0.0, 10.0),
+                ),
+              ],
             ),
-          ],
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Cabeçalho do diálogo
+                Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: groupColor.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Icon(
+                        icon,
+                        color: groupColor,
+                        size: 24,
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Fórmula para $parameterName",
+                            style: GoogleFonts.poppins(
+                              textStyle: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF333333),
+                              ),
+                            ),
+                          ),
+                          Text(
+                            "Valor inserido: ${parsedValue.toStringAsFixed(2)}",
+                            style: GoogleFonts.poppins(
+                              textStyle: TextStyle(
+                                fontSize: 13,
+                                color: Colors.grey.shade600,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 20),
+
+                // Fórmula utilizada
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade100,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Fórmula aplicada:",
+                        style: GoogleFonts.poppins(
+                          textStyle: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xFF333333),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        formulaUsed,
+                        style: GoogleFonts.robotoMono(
+                          textStyle: TextStyle(
+                            fontSize: 14,
+                            color: groupColor,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                const SizedBox(height: 16),
+
+                // Resultado do cálculo
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: groupColor.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                      color: groupColor.withOpacity(0.3),
+                      width: 1,
+                    ),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Resultado do QI:",
+                        style: GoogleFonts.poppins(
+                          textStyle: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xFF333333),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            result.isNaN
+                                ? "Valor inválido"
+                                : result.toStringAsFixed(2),
+                            style: GoogleFonts.poppins(
+                              textStyle: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                                color: result.isNaN ? Colors.red : groupColor,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+
+                const SizedBox(height: 24),
+
+                // Botão de fechar
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: groupColor,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    child: Text(
+                      "Fechar",
+                      style: GoogleFonts.poppins(
+                        textStyle: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
         );
       },
+    );
+  }
+
+  void _showErrorSnackbar() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Row(
+          children: [
+            const Icon(Icons.error_outline, color: Colors.white),
+            const SizedBox(width: 10),
+            const Text('Por favor, preencha todos os campos.'),
+          ],
+        ),
+        backgroundColor: Colors.red.shade700,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        margin: const EdgeInsets.all(10),
+        duration: const Duration(seconds: 3),
+      ),
     );
   }
 
@@ -282,42 +758,9 @@ class _CalculadoraiqaState extends State<Calculadoraiqa> {
   }
 
   double parseInput(String input) {
+    if (input.isEmpty) return 0.0;
     String sanitizedInput = input.replaceAll(',', '.');
     return double.tryParse(sanitizedInput) ?? 0.0;
-  }
-
-  void ResultadoIQA() {
-    double dbo = parseInput(dboController.text);
-    double od = parseInput(odController.text);
-    double fosforo = parseInput(fosforoController.text);
-    double nitrogenio = parseInput(nitrogenioController.text);
-    double coliformes = parseInput(coliformesController.text);
-    double turbidez = parseInput(turbidezController.text);
-    double solidosSuspensos = parseInput(solidosSuspensosController.text);
-    double temperatura = parseInput(temperaturaController.text);
-    double ph = parseInput(phController.text);
-
-    double pesoPH = 0.12;
-    double pesoDBO5 = 0.10;
-    double pesoNitrogenio = 0.10;
-    double pesoFosforo = 0.10;
-    double pesoTemperatura = 0.10;
-    double pesoTurbidez = 0.08;
-    double pesoOxigenioDissolvido = 0.17;
-    double pesoSolidosTotais = 0.08;
-    double pesoEColi = 0.15;
-
-    num resultado = pow(calcularIQADBO(dbo), pesoDBO5) *
-        pow(calcularIQANitrogenio(nitrogenio), pesoNitrogenio) *
-        pow(calcularIQAFosforo(fosforo), pesoFosforo) *
-        pow(calcularIQADiferencaTemperatura(temperatura), pesoTemperatura) *
-        pow(calcularIQATurbidez(turbidez), pesoTurbidez) *
-        pow(calcularIQASolidosTotais(solidosSuspensos), pesoSolidosTotais) *
-        pow(calcularIQAOD(od), pesoOxigenioDissolvido) *
-        pow(calcularIQApH(ph), pesoPH) *
-        pow(calcularIQAColiformes(coliformes), pesoEColi);
-
-    print("\n\n\nO resultado do IQA é: $resultado");
   }
 
   // Fórmulas para DBO
@@ -450,13 +893,18 @@ class _CalculadoraiqaState extends State<Calculadoraiqa> {
     }
   }
 
+  double logBase10(double x) {
+    return log(x) / log(10);
+  }
+
   // Fórmulas para Coliformes
   String _getFormulaColiformes(double coliformes) {
-    if (coliformes >= 0 && coliformes <= 1) {
-      return "100 - 33 * log($coliformes)";
-    } else if (coliformes > 1 && coliformes <= 5) {
-      return "100 - 37.2 * log($coliformes) + 3.60743 * pow(log($coliformes), 2)";
-    } else if (coliformes > 5) {
+    double newvar = logBase10(coliformes);
+    if (newvar >= 0 && newvar <= 1) {
+      return "100 - 33 * logBase10($coliformes)";
+    } else if (newvar > 1 && newvar <= 5) {
+      return "100 - 37.2 * logBase10($coliformes) + 3.60743 * pow(logBase10($coliformes), 2)";
+    } else if (newvar > 5) {
       return "Para valores maiores que 5 é usado a constante 3";
     } else {
       return "Valor fora do intervalo esperado";
@@ -464,11 +912,16 @@ class _CalculadoraiqaState extends State<Calculadoraiqa> {
   }
 
   double calcularIQAColiformes(double coliformes) {
-    if (coliformes >= 0 && coliformes <= 1) {
-      return 100 - 33 * log(coliformes);
-    } else if (coliformes > 1 && coliformes <= 5) {
-      return 100 - 37.2 * log(coliformes) + 3.60743 * pow(log(coliformes), 2);
-    } else if (coliformes > 5) {
+    if (coliformes <= 0) coliformes = 0.01; // Evitar log de zero ou negativo
+    double newvar = logBase10(coliformes);
+
+    if (newvar >= 0 && newvar <= 1) {
+      return 100 - 33 * logBase10(coliformes);
+    } else if (newvar > 1 && newvar <= 5) {
+      return 100 -
+          37.2 * logBase10(coliformes) +
+          3.60743 * pow(logBase10(coliformes), 2);
+    } else if (newvar > 5) {
       return 3;
     } else {
       throw Exception('Valor de coliformes fora do intervalo esperado');
@@ -585,31 +1038,5 @@ class _CalculadoraiqaState extends State<Calculadoraiqa> {
     } else {
       throw Exception('Valor de pH fora do intervalo esperado');
     }
-  }
-
-  void teste() {
-    double dbo = parseInput(dboController.text);
-    double od = parseInput(odController.text);
-    double fosforo = parseInput(fosforoController.text);
-    double nitrogenio = parseInput(nitrogenioController.text);
-    double coliformes = parseInput(coliformesController.text);
-    double turbidez = parseInput(turbidezController.text);
-    double solidosSuspensos = parseInput(solidosSuspensosController.text);
-    double temperatura = parseInput(temperaturaController.text);
-    double ph = parseInput(phController.text);
-
-    print(
-        "calcularIQAColiformes(${coliformes}): ${calcularIQAColiformes(coliformes)}");
-    print("calcularIQApH(${ph}): ${calcularIQApH(ph)}");
-    print("calcularIQADBO(${dbo}): ${calcularIQADBO(dbo)}");
-    print(
-        "calcularIQANitrogenio(${nitrogenio}): ${calcularIQANitrogenio(nitrogenio)}");
-    print("calcularIQAFosforo(${fosforo}): ${calcularIQAFosforo(fosforo)}");
-    print(
-        "calcularIQADiferencaTemperatura(): ${calcularIQADiferencaTemperatura(temperatura)}");
-    print("calcularIQATurbidez(${turbidez}): ${calcularIQATurbidez(turbidez)}");
-    print(
-        "calcularIQASolidosTotais(${solidosSuspensos}): ${calcularIQASolidosTotais(solidosSuspensos)}");
-    print("calcularIQAOD(${od}): ${calcularIQAOD(od)}");
   }
 }

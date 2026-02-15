@@ -1,10 +1,7 @@
-import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // Para formatar a data e hora
-import 'package:open_file/open_file.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
@@ -135,7 +132,7 @@ class PDFGenerator {
                       fontWeight: pw.FontWeight.normal,
                       fontSize: 12,
                     ),
-                    cellStyle: pw.TextStyle(fontSize: 12),
+                    cellStyle: const pw.TextStyle(fontSize: 12),
                     cellAlignment: pw.Alignment.center,
                   ),
                   pw.SizedBox(height: 20),
@@ -155,7 +152,7 @@ class PDFGenerator {
                 right: 0,
                 child: pw.Text(
                   'Desenvolvido por Antonio dos Santos, João Pedro de Brito e Miriam Cleide Amorim',
-                  style: pw.TextStyle(
+                  style: const pw.TextStyle(
                     fontSize: 10,
                     color: PdfColors.grey,
                   ),
@@ -182,7 +179,8 @@ class DownloadPDFButton extends StatelessWidget {
   final Map<String, double> valoresIQA;
 
   final Map<String, String> valoresDigitados;
-  DownloadPDFButton({required this.valoresIQA, required this.valoresDigitados});
+  const DownloadPDFButton(
+      {super.key, required this.valoresIQA, required this.valoresDigitados});
 
   @override
   Widget build(BuildContext context) {

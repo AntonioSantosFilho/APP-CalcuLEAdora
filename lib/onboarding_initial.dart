@@ -1,5 +1,3 @@
-import 'package:calculeadora/details_page.dart';
-import 'package:calculeadora/main.dart';
 import 'package:calculeadora/navbart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_onboarding_slider/flutter_onboarding_slider.dart';
@@ -17,7 +15,7 @@ class OnboardingInitial extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => Navbart(),
+            builder: (context) => const Navbart(),
           ),
         );
       },
@@ -44,7 +42,7 @@ class OnboardingInitial extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => Navbart(),
+            builder: (context) => const Navbart(),
           ),
         );
       },

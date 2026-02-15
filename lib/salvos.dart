@@ -1,8 +1,11 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SavedResultsPage extends StatefulWidget {
+  const SavedResultsPage({super.key});
+
   @override
   _SavedResultsPageState createState() => _SavedResultsPageState();
 }
@@ -44,13 +47,20 @@ class _SavedResultsPageState extends State<SavedResultsPage> {
         return AlertDialog(
           title: Text(
             'Detalhes dos Valores Digitados',
+            style: GoogleFonts.gowunBatang(
+              textStyle: const TextStyle(
+                  color: Color.fromARGB(255, 0, 0, 0),
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: .5),
+            ),
             textAlign: TextAlign.center,
           ),
           content: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 Table(
@@ -93,24 +103,30 @@ class _SavedResultsPageState extends State<SavedResultsPage> {
                             padding: const EdgeInsets.all(4.0),
                             child: Text(
                               entry.value,
-                              style: TextStyle(),
+                              style: const TextStyle(),
                               textAlign: TextAlign.center,
                             ),
                           ),
                         ],
                       );
-                    }).toList(),
+                    }),
                   ],
                 ),
-                Divider(thickness: 2),
-                SizedBox(
+                const Divider(thickness: 2),
+                const SizedBox(
                   height: 20,
                 ),
-                Container(
+                SizedBox(
                   width: double.infinity,
                   child: Text(
                     'Resultado do IQA: ${iqaValue.toStringAsFixed(2)}',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                    style: GoogleFonts.gowunBatang(
+                      textStyle: const TextStyle(
+                          color: Color.fromARGB(255, 0, 0, 0),
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: .5),
+                    ),
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -120,7 +136,7 @@ class _SavedResultsPageState extends State<SavedResultsPage> {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: Text('Fechar'),
+              child: const Text('Fechar'),
             ),
           ],
         );
@@ -160,7 +176,16 @@ class _SavedResultsPageState extends State<SavedResultsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Resultados Salvos'),
+        title: Text(
+          'Resultados Salvos - IQA',
+          style: GoogleFonts.gowunBatang(
+            textStyle: const TextStyle(
+                color: Color.fromARGB(255, 0, 0, 0),
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+                letterSpacing: .5),
+          ),
+        ),
         centerTitle: true,
         backgroundColor: Colors.blueAccent,
       ),
@@ -168,11 +193,11 @@ class _SavedResultsPageState extends State<SavedResultsPage> {
         future: _loadAllPreferences(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return Center(child: Text('Erro ao carregar dados'));
+            return const Center(child: Text('Erro ao carregar dados'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text('Nenhum dado salvo.'));
+            return const Center(child: Text('Nenhum dado salvo.'));
           } else {
             List<Map<String, dynamic>> dataList = snapshot.data!;
             return ListView.builder(
@@ -196,13 +221,7 @@ class _SavedResultsPageState extends State<SavedResultsPage> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         IconButton(
-                          icon: Icon(Icons.delete, color: Colors.redAccent),
-                          onPressed: () {
-                            _deleteResult(timestamp);
-                          },
-                        ),
-                        IconButton(
-                          icon: Icon(Icons.info_outline,
+                          icon: const Icon(Icons.info_outline,
                               color: Colors.blueAccent),
                           onPressed: () {
                             _showDetailsPopup(
@@ -211,6 +230,13 @@ class _SavedResultsPageState extends State<SavedResultsPage> {
                                   data['valoresDigitados']),
                               iqaValue,
                             );
+                          },
+                        ),
+                        IconButton(
+                          icon:
+                              const Icon(Icons.delete, color: Colors.redAccent),
+                          onPressed: () {
+                            _deleteResult(timestamp);
                           },
                         ),
                       ],
