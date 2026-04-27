@@ -1,0 +1,2 @@
+C:/Users/joaop/Downloads/calculeadora/APP-CalcuLEAdora/android/app/.cxx/RelWithDebInfo/2y030201/x86/CMakeFiles/edit_cache.dir
+C:/Users/joaop/Downloads/calculeadora/APP-CalcuLEAdora/android/app/.cxx/RelWithDebInfo/2y030201/x86/CMakeFiles/rebuild_cache.dir

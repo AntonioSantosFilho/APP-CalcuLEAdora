@@ -522,26 +522,24 @@ class _IetReservatoriosState extends State<IetReservatorios> {
   }
 
   void calculo(double cl, double pt) {
-    double ietCla = 10 * (6 - ((0.92 - 0.34 * (log(cl))) / log(2)));
-
-    double ietPt = 10 * (6 - ((1.77 - 0.42 * (log(pt))) / log(2)));
-
-    print("\nRIOS iet-cla: $ietCla \n\nRIOS iet_pt: $ietPt");
+    double ietCla = 10 * (6 - (0.92 - 0.34 * log(cl) / log(2)));
+    double ietPt = 10 * (6 - (1.77 - 0.42 * log(pt) / log(2)));
+    print("\nRESERVATÓRIOS iet-cla: $ietCla \n\nRESERVATÓRIOS iet_pt: $ietPt");
   }
 
   double calcularIETcl(double cl) {
-    return 10 * (6 - ((0.92 - 0.34 * (log(cl))) / log(2)));
+    return 10 * (6 - (0.92 - 0.34 * log(cl) / log(2)));
   }
 
   double calcularIETpt(double pt) {
-    return 10 * (6 - ((1.77 - 0.42 * (log(pt))) / log(2)));
+    return 10 * (6 - (1.77 - 0.42 * log(pt) / log(2)));
   }
 
   String _getFormulaIETcl(double clorofila) {
-    return "a fórmula usada é\n\n\n10*(6-((0.92-0.34*(log(cl)))/log(2)))";
+    return "IET(Cla) = 10 × {6 - [0,92 - 0,34 × (ln(Cla)/ln(2))]}";
   }
 
   String _getFormulaIETpt(double clorofila) {
-    return "a fórmula usada é\n\n\n10*(6-((1.77-0.42*(log(pt))) / log(2)))";
+    return "IET(PT) = 10 × {6 - [1,77 - 0,42 × (ln(PT)/ln(2))]}";
   }
 }

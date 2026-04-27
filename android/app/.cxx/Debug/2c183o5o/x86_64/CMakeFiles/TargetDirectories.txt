@@ -1,0 +1,2 @@
+C:/Users/joaop/Downloads/calculeadora/APP-CalcuLEAdora/android/app/.cxx/Debug/2c183o5o/x86_64/CMakeFiles/edit_cache.dir
+C:/Users/joaop/Downloads/calculeadora/APP-CalcuLEAdora/android/app/.cxx/Debug/2c183o5o/x86_64/CMakeFiles/rebuild_cache.dir
